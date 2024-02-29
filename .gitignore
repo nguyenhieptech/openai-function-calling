@@ -1,0 +1,12 @@
+# OS
+.DS_Store
+
+# Frontend
+web/node_modules
+web/.next
+
+# Backend
+api/node_modules
+api/dist
+
+api
