@@ -8,5 +8,3 @@ web/.next
 # Backend
 api/node_modules
 api/dist
-
-api/*
