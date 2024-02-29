@@ -9,4 +9,4 @@ web/.next
 api/node_modules
 api/dist
 
-api
+api/*
