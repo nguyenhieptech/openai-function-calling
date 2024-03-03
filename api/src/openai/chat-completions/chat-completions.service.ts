@@ -1,25 +1,21 @@
+import { OpenAIService } from '@/openai/openai.service';
 import { WeatherService } from '@/weather/weather.service';
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
 
 @Injectable()
-export class ChatService {
-  constructor(private readonly weatherService: WeatherService) {}
+export class ChatCompletionsService {
+  constructor(
+    private readonly weatherService: WeatherService,
+    private readonly openaiService: OpenAIService
+  ) {}
 
-  private openai = new OpenAI();
-
-  async create(createChatDto: CreateChatDto) {
-    return 'This action adds a new chat';
-  }
-
-  async findAll() {
+  async create() {
     // https://platform.openai.com/docs/guides/function-calling/parallel-function-calling
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
         role: 'user',
-        content: "I mean what's the weather like in Paris (celsius)?",
+        content: "I mean what's the weather like in Tokyo?",
       },
     ];
 
@@ -44,7 +40,7 @@ export class ChatService {
       },
     ];
 
-    const openAiResponse = await this.openai.chat.completions.create({
+    const openAiResponse = await this.openaiService.chat.completions.create({
       model: 'gpt-3.5-turbo-0125',
       messages: messages,
       tools: tools,
@@ -84,7 +80,7 @@ export class ChatService {
       }
 
       // Get a new response from the model where it can see the function response
-      const secondOpenAiResponse = await this.openai.chat.completions.create({
+      const secondOpenAiResponse = await this.openaiService.chat.completions.create({
         model: 'gpt-3.5-turbo-0125',
         messages: messages,
       });
@@ -94,16 +90,4 @@ export class ChatService {
       return secondOpenAiResponse.choices[0];
     }
   }
-
-  // async findOne(id: number) {
-  //   return `This action returns a #${id} chat`;
-  // }
-
-  // async update(id: number, updateChatDto: UpdateChatDto) {
-  //   return `This action updates a #${id} chat`;
-  // }
-
-  // async remove(id: number) {
-  //   return `This action removes a #${id} chat`;
-  // }
 }
