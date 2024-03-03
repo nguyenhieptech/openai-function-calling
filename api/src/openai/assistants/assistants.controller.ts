@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
-import { UpdateAssistantDto } from './assistants.dto';
+import { Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { AssistantService } from './assistants.service';
 
 @Controller('assistants')
@@ -17,18 +16,18 @@ export class AssistantController {
     return this.assistantService.listAll();
   }
 
-  @Get()
-  retrieve(@Query('assistant_id') id: string) {
-    return this.assistantService.retrieve(id);
+  @Get(':id')
+  retrieve(@Param('id') assistantId: string) {
+    return this.assistantService.retrieve(assistantId);
   }
 
-  @Post()
-  modify(@Query('assistant_id') assistantId: string, @Query('file_id') fileId: string) {
+  @Put(':id')
+  modify(@Param('id') assistantId: string, @Query('file_id') fileId: string) {
     return this.assistantService.modify(assistantId, fileId);
   }
 
-  @Delete()
-  delete(@Query('assistant_id') assistantId: string) {
+  @Delete(':id')
+  delete(@Param('id') assistantId: string) {
     return this.assistantService.remove(assistantId);
   }
 }

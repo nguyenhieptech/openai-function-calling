@@ -6,8 +6,8 @@ export class AssistantFileController {
   constructor(private readonly assistantFileService: AssistantFileService) {}
   // https://platform.openai.com/docs/api-reference/assistants
 
-  @Post()
-  create(@Query('assistant_id') assistantId: string, @Query('file_id') fileId: string) {
+  @Post(':id')
+  create(@Param('id') assistantId: string, @Query('file_id') fileId: string) {
     return this.assistantFileService.create(assistantId, fileId);
   }
 
@@ -16,13 +16,13 @@ export class AssistantFileController {
     return this.assistantFileService.listAll(assistantId);
   }
 
-  @Get()
-  retrieve(@Query('assistant_id') assistantId: string, @Query('file_id') fileId: string) {
+  @Get(':id')
+  retrieve(@Param('id') assistantId: string, @Query('file_id') fileId: string) {
     return this.assistantFileService.retrieve(assistantId, fileId);
   }
 
   @Delete(':id')
-  remove(@Query('assistant_id') assistantId: string, @Query('file_id') fileId: string) {
+  remove(@Param('id') assistantId: string, @Query('file_id') fileId: string) {
     return this.assistantFileService.remove(assistantId, fileId);
   }
 }
