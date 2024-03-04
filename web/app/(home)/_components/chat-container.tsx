@@ -76,7 +76,7 @@ export function ChatContainer() {
     setIsSending(true);
 
     try {
-      const response = await http.post('chat-completions');
+      const response = await http.post('chat-completions', { content: userInput });
       const newMessage = response.data;
       console.log('newMessage', newMessage);
       // setMessages([...messages, newMessage]);

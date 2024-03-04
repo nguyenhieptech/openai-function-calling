@@ -1,4 +1,5 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateChatCompletionsDto } from './chat-completions.dto';
 import { ChatCompletionsService } from './chat-completions.service';
 
 @Controller('chat-completions')
@@ -7,7 +8,7 @@ export class ChatCompletionsController {
   // https://platform.openai.com/docs/api-reference/chat/create
 
   @Post()
-  create() {
-    return this.chatCompletionsService.create();
+  create(@Body() createChatCompletionsDto: CreateChatCompletionsDto) {
+    return this.chatCompletionsService.create(createChatCompletionsDto.content);
   }
 }

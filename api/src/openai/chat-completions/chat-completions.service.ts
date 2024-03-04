@@ -10,12 +10,16 @@ export class ChatCompletionsService {
     private readonly openaiService: OpenAIService
   ) {}
 
-  async create() {
+  async create(content: string) {
     // https://platform.openai.com/docs/guides/function-calling/parallel-function-calling
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
         role: 'user',
-        content: "I mean what's the weather like in Tokyo?",
+        content,
+      },
+      {
+        role: 'system',
+        content: `If you don't understand or don't have information, ask for clarification.`,
       },
     ];
 
