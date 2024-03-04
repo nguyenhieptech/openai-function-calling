@@ -21,9 +21,9 @@ export function AssistantComponent() {
   async function handleCreate() {
     setCreating(true);
     try {
-      const response = await http.get<{ assistant: Assistant }>('assistant/create');
+      const response = await http.post<Assistant>('assistants');
 
-      const newAssistant = response.data.assistant;
+      const newAssistant = response.data;
       console.log('newAssistant', newAssistant);
       setAssistant(newAssistant);
       localStorage.setItem('assistant', JSON.stringify(newAssistant));
@@ -38,33 +38,12 @@ export function AssistantComponent() {
     }
   }
 
-  async function handleModify() {
-    setModifying(true);
-    try {
-      const response = await http.get<{ assistant: Assistant }>(
-        `assistant/modify?assistant_id=${assistant?.id}&file_id=${file}`
-      );
-
-      const newAssistant = response.data.assistant;
-      setAssistant(newAssistant);
-      localStorage.setItem('assistant', JSON.stringify(newAssistant));
-      toast.success('Successfully created assistant', {
-        position: 'bottom-center',
-      });
-    } catch (error) {
-      console.log('error', error);
-      toast.error('Error creating assistant', { position: 'bottom-center' });
-    } finally {
-      setModifying(false);
-    }
-  }
-
   async function handleList() {
     setListing(true);
     try {
-      const response = await http.get<{ assistants: Assistant[] }>(`assistant/list`);
+      const response = await http.get<Assistant[]>(`assistants`);
 
-      const assistants = response.data.assistants;
+      const assistants = response.data;
       console.log('assistants', assistants);
 
       toast.success(`Assistants:\n${assistants.map((a) => `${a.name + '\n'}`)} `, {
@@ -78,11 +57,31 @@ export function AssistantComponent() {
     }
   }
 
+  async function handleModify() {
+    setModifying(true);
+    try {
+      const response = await http.put<Assistant>(
+        `assistants/${assistant?.id}?file_id=${file}`
+      );
+
+      const newAssistant = response.data;
+      setAssistant(newAssistant);
+      localStorage.setItem('assistant', JSON.stringify(newAssistant));
+      toast.success('Successfully created assistant', {
+        position: 'bottom-center',
+      });
+    } catch (error) {
+      console.log('error', error);
+      toast.error('Error creating assistant', { position: 'bottom-center' });
+    } finally {
+      setModifying(false);
+    }
+  }
+
   async function handleDelete() {
     setDeleting(true);
     try {
-      await http.get(`assistant/delete?assistant_id=${assistant?.id}`);
-
+      await http.delete(`assistants/${assistant?.id}`);
       setAssistant(null);
       localStorage.removeItem('assistant');
       toast.success('Successfully deleted assistant', {

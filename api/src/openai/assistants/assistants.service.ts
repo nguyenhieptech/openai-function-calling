@@ -1,6 +1,5 @@
 import { OpenAIService } from '@/openai/openai.service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateAssistantDto } from './assistants.dto';
 
 @Injectable()
 export class AssistantService {
@@ -20,9 +19,8 @@ export class AssistantService {
         tools: [{ type: 'retrieval' }],
         model: 'gpt-3.5-turbo',
       });
-      console.log(assistant);
 
-      return { assistant };
+      return assistant;
     } catch (e) {
       return { error: e };
     }
@@ -65,9 +63,8 @@ export class AssistantService {
       const updatedAssistant = await this.openaiService.beta.assistants.update(assistantId, {
         file_ids: [fileId],
       });
-      console.log(updatedAssistant);
 
-      return { assistant: updatedAssistant };
+      return updatedAssistant;
     } catch (e) {
       console.log(e);
       return { error: e };
@@ -81,8 +78,8 @@ export class AssistantService {
 
     // https://platform.openai.com/docs/api-reference/assistants/deleteAssistant
     try {
-      const response = await this.openaiService.beta.assistants.del(assistantId);
-      return response;
+      const deletedAssistant = await this.openaiService.beta.assistants.del(assistantId);
+      return deletedAssistant;
     } catch (e) {
       return { error: e };
     }

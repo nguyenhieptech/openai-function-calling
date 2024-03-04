@@ -42,13 +42,13 @@ export function AssistantFileComponent() {
       formData.append('file', file);
 
       // Send the FormData object directly
-      const response = await http.post<{ file: FileObject }>('file/upload', formData, {
+      const response = await http.post<FileObject>('assistant-files', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      const uploadedFile = response.data.file;
+      const uploadedFile = response.data;
 
       console.log('response', uploadedFile);
       toast.success('Successfully uploaded file', {
@@ -71,8 +71,8 @@ export function AssistantFileComponent() {
 
     setCreating(true);
     try {
-      const response = await http.get<{ assistantFile: AssistantFile }>(
-        `assistant-file/create?assistant_id=${assistant.id}&file_id=${file}`
+      const response = await http.post<{ assistantFile: AssistantFile }>(
+        `assistant-files/${assistant.id}?file_id=${file}`
       );
 
       const assistantFile = response.data.assistantFile;
@@ -100,11 +100,11 @@ export function AssistantFileComponent() {
 
     setListing(true);
     try {
-      const response = await http.get<{
-        assistantFiles: AssistantFilesPage;
-      }>(`assistant-file/list?assistant_id=${assistant.id}`);
+      const response = await http.get<AssistantFilesPage>(
+        `assistant-files?assistant_id=${assistant.id}`
+      );
 
-      const fetchedAssistantFiles = response.data.assistantFiles;
+      const fetchedAssistantFiles = response.data;
 
       console.log('fetchedAssistantFiles', fetchedAssistantFiles);
 
@@ -127,9 +127,7 @@ export function AssistantFileComponent() {
 
     setDeleting(true);
     try {
-      await http.get(
-        `assistant-file/delete?assistant_id=${assistant?.id}&file_id=${file}`
-      );
+      await http.get(`assistant-files/${assistant?.id}?file_id=${file}`);
 
       toast.success('Successfully deleted assistant file', {
         position: 'bottom-center',

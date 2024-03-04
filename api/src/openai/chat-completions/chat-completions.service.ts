@@ -40,13 +40,13 @@ export class ChatCompletionsService {
       },
     ];
 
-    const openAiResponse = await this.openaiService.chat.completions.create({
+    const firstResponse = await this.openaiService.chat.completions.create({
       model: 'gpt-3.5-turbo-0125',
       messages: messages,
       tools: tools,
     });
 
-    const responseMessage = openAiResponse.choices[0].message;
+    const responseMessage = firstResponse.choices[0].message;
 
     // Step 2: check if the model wanted to call a function
     const toolCalls = responseMessage.tool_calls!;
@@ -80,14 +80,14 @@ export class ChatCompletionsService {
       }
 
       // Get a new response from the model where it can see the function response
-      const secondOpenAiResponse = await this.openaiService.chat.completions.create({
+      const secondResponse = await this.openaiService.chat.completions.create({
         model: 'gpt-3.5-turbo-0125',
         messages: messages,
       });
 
       // If you want to see the message directly, return message.content
       // return secondOpenAiResponse.choices[0].message.content;
-      return secondOpenAiResponse.choices[0];
+      return secondResponse.choices[0];
     }
   }
 }

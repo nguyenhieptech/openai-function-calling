@@ -18,12 +18,9 @@ export class MessagesService {
         role: 'user',
         content: message,
       });
-      console.log(threadMessage);
-
-      return { message: threadMessage };
+      return threadMessage;
     } catch (e) {
       console.log(e);
-      return Response.json({ error: e });
     }
   }
 
@@ -36,10 +33,9 @@ export class MessagesService {
       const response = await this.openaiService.beta.threads.messages.list(threadId);
       console.log(response);
 
-      return { messages: response.data };
+      return response.data;
     } catch (e) {
       console.log(e);
-      return Response.json({ error: e });
     }
   }
 }

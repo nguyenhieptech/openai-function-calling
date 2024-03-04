@@ -11,18 +11,18 @@ export class ThreadController {
     return this.threadService.create();
   }
 
-  @Get()
-  retrieve(@Query('thread_id') threadId: string) {
+  @Get(':id')
+  retrieve(@Param('id') threadId: string) {
     return this.threadService.retrieve(threadId);
   }
 
-  @Patch()
-  modify(@Query('thread_id') threadId: string) {
+  @Patch(':id')
+  modify(@Param('id') threadId: string) {
     return this.threadService.modify(threadId);
   }
 
-  @Delete()
-  delete(@Query('thread_id') threadId: string) {
+  @Delete(':id')
+  delete(@Param('id') threadId: string) {
     return this.threadService.delete(threadId);
   }
 }

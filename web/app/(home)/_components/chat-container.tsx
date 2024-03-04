@@ -23,9 +23,9 @@ export function ChatContainer() {
 
       try {
         http
-          .get<{ messages: ThreadMessage[] }>(`message/list?thread_id=${thread.id}`)
+          .get<ThreadMessage[]>(`threads/messages?thread_id=${thread.id}`)
           .then((response) => {
-            let newMessages = response.data.messages;
+            let newMessages = response.data;
 
             // Sort messages in descending order by createdAt
             newMessages = newMessages.sort(
@@ -51,11 +51,11 @@ export function ChatContainer() {
     setIsSending(true);
 
     try {
-      const response = await http.post<{ message: ThreadMessage }>(
-        `message/create?thread_id=${thread.id}&message=${userInput}`,
+      const response = await http.post<ThreadMessage>(
+        `threads/messages?thread_id=${thread.id}&message=${userInput}`,
         { message: userInput, threadId: thread.id }
       );
-      const newMessage = response.data.message;
+      const newMessage = response.data;
       console.log('newMessage', newMessage);
       setMessages([...messages, newMessage]);
       setUserInput('');
@@ -76,14 +76,11 @@ export function ChatContainer() {
     setIsSending(true);
 
     try {
-      // If we want to call a function, we can send the body inside here and process logic in `api` folder
-      const response = await http.get('chat');
+      const response = await http.post('chat-completions');
       const newMessage = response.data;
       console.log('newMessage', newMessage);
       // setMessages([...messages, newMessage]);
       setUserInput('');
-
-      // api/src/openai/chat/chat.service.ts L93,94
       setMessageValue(newMessage.message.content);
 
       toast.success('Successfully sent message', {
