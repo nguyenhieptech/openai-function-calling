@@ -18,9 +18,9 @@ export function ThreadComponent() {
   async function handleCreate() {
     setCreating(true);
     try {
-      const response = await http.get<{ thread: Thread }>('thread/create');
+      const response = await http.post<Thread>('threads');
 
-      const newThread = response.data.thread;
+      const newThread = response.data;
       console.log('response', newThread);
       setThread(newThread);
       localStorage.setItem('thread', JSON.stringify(newThread));
@@ -40,11 +40,9 @@ export function ThreadComponent() {
 
     setDeleting(true);
     try {
-      const response = await http.get<{ thread: Thread }>(
-        `thread/delete?thread_id=${thread.id}`
-      );
+      const response = await http.delete<Thread>(`threads/${thread.id}`);
 
-      const deletedThread = response.data.thread;
+      const deletedThread = response.data;
       console.log('response', deletedThread);
       setThread(null);
       localStorage.removeItem('thread');

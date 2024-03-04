@@ -42,10 +42,10 @@ export function RunComponent() {
     if (!thread) return;
     const intervalId = setInterval(async () => {
       try {
-        const response = await http.get<{ run: Run }>(
-          `run/retrieve?thread_id=${thread.id}&run_id=${runId}`
+        const response = await http.get<Run>(
+          `threads/runs?thread_id=${thread.id}&assistant_id=${runId}`
         );
-        const updatedRun = response.data.run;
+        const updatedRun = response.data;
 
         setRun(updatedRun);
         setRunState(updatedRun.status);
@@ -70,11 +70,11 @@ export function RunComponent() {
 
     setCreating(true);
     try {
-      const response = await http.get<{ run: Run }>(
-        `run/create?thread_id=${thread.id}&assistantId=${assistant.id}`
+      const response = await http.get<Run>(
+        `threads/runs?thread_id=${thread.id}&assistant_id=${assistant.id}`
       );
 
-      const newRun = response.data.run;
+      const newRun = response.data;
       setRunState(newRun.status);
       setRun(newRun);
       toast.success('Run created', { position: 'bottom-center' });
@@ -95,11 +95,11 @@ export function RunComponent() {
 
     setCanceling(true);
     try {
-      const response = await http.get<{ run: Run }>(
-        `run/cancel?run_id=${run.id}&thread_id=${thread.id}`
+      const response = await http.get<Run>(
+        `threads/runs?run_id=${run.id}&thread_id=${thread.id}`
       );
 
-      const newRun = response.data.run;
+      const newRun = response.data;
       setRunState(newRun.status);
       setRun(newRun);
       toast.success('Run canceled', { position: 'bottom-center' });
@@ -117,9 +117,9 @@ export function RunComponent() {
 
     try {
       http
-        .get<{ messages: ThreadMessage[] }>(`message/list?thread_id=${thread.id}`)
+        .get<ThreadMessage[]>(`threads/messages?thread_id=${thread.id}`)
         .then((response) => {
-          let newMessages = response.data.messages;
+          let newMessages = response.data;
 
           // Sort messages in descending order by createdAt
           newMessages = newMessages.sort(
@@ -197,7 +197,7 @@ export function RunComponent() {
     console.log('toolOutputs', toolOutputs);
     if (toolOutputs.length > 0) {
       const response = await http.post<{ run: Run; success: boolean }>(
-        'run/submit-tool-output',
+        'runs/submit-tool-output',
         {
           runId: run?.id,
           threadId: thread?.id,
