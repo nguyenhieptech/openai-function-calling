@@ -1,29 +1,24 @@
 import { OpenAIService } from '@/openai/openai.service';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class AssistantService {
   constructor(private readonly openaiService: OpenAIService) {}
+  // https://platform.openai.com/docs/api-reference/assistants
 
   async create() {
-    // https://platform.openai.com/docs/api-reference/assistants/createAssistant
-    try {
-      const assistant = await this.openaiService.beta.assistants.create({
-        instructions: `
+    const assistant = await this.openaiService.beta.assistants.create({
+      instructions: `
           You are a professional stock analyst.
           I will ask you questions about the stock market and you will answer them.
           You can use the documents I provide to you to help you answer the questions.
           If you're not 100% sure of the answer, you can say "I don't know".
         `,
-        name: 'Mini Stock Analyst',
-        tools: [{ type: 'retrieval' }],
-        model: 'gpt-3.5-turbo',
-      });
-
-      return assistant;
-    } catch (e) {
-      return { error: e };
-    }
+      name: 'Mini Stock Analyst',
+      tools: [{ type: 'retrieval' }],
+      model: 'gpt-3.5-turbo',
+    });
+    return assistant;
   }
 
   async listAll() {
@@ -32,7 +27,6 @@ export class AssistantService {
       limit: 10,
     });
     const assistants = response.data;
-
     return assistants;
   }
 
@@ -41,12 +35,8 @@ export class AssistantService {
       throw new NotFoundException({ error: 'Not found assistant id' });
     }
 
-    try {
-      const assistant = await this.openaiService.beta.assistants.retrieve(assistantId);
-      return assistant;
-    } catch (error) {
-      throw new BadRequestException({ error: 'Expected assistant id' });
-    }
+    const assistant = await this.openaiService.beta.assistants.retrieve(assistantId);
+    return assistant;
   }
 
   async modify(assistantId: string, fileId: string) {
@@ -58,17 +48,10 @@ export class AssistantService {
       throw new NotFoundException({ error: 'No file id provided' });
     }
 
-    // https://platform.openai.com/docs/api-reference/assistants/modifyAssistant
-    try {
-      const updatedAssistant = await this.openaiService.beta.assistants.update(assistantId, {
-        file_ids: [fileId],
-      });
-
-      return updatedAssistant;
-    } catch (e) {
-      console.log(e);
-      return { error: e };
-    }
+    const updatedAssistant = await this.openaiService.beta.assistants.update(assistantId, {
+      file_ids: [fileId],
+    });
+    return updatedAssistant;
   }
 
   async remove(assistantId: string) {
@@ -76,12 +59,7 @@ export class AssistantService {
       throw new NotFoundException({ error: 'No id provided' });
     }
 
-    // https://platform.openai.com/docs/api-reference/assistants/deleteAssistant
-    try {
-      const deletedAssistant = await this.openaiService.beta.assistants.del(assistantId);
-      return deletedAssistant;
-    } catch (e) {
-      return { error: e };
-    }
+    const deletedAssistant = await this.openaiService.beta.assistants.del(assistantId);
+    return deletedAssistant;
   }
 }

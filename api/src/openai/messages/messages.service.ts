@@ -12,30 +12,19 @@ export class MessagesService {
       throw new NotFoundException({ error: 'Invalid message' });
     }
 
-    // https://platform.openai.com/docs/api-reference/messages/createMessage
-    try {
-      const threadMessage = await this.openaiService.beta.threads.messages.create(threadId, {
-        role: 'user',
-        content: message,
-      });
-      return threadMessage;
-    } catch (e) {
-      console.log(e);
-    }
+    const threadMessage = await this.openaiService.beta.threads.messages.create(threadId, {
+      role: 'user',
+      content: message,
+    });
+    return threadMessage;
   }
 
   async listMessages(threadId: string) {
     if (!threadId) {
       return Response.json({ error: 'No id provided' }, { status: 400 });
     }
-    // https://platform.openai.com/docs/api-reference/messages/listMessages
-    try {
-      const response = await this.openaiService.beta.threads.messages.list(threadId);
-      console.log(response);
 
-      return response.data;
-    } catch (e) {
-      console.log(e);
-    }
+    const response = await this.openaiService.beta.threads.messages.list(threadId);
+    return response.data;
   }
 }

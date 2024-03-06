@@ -4,6 +4,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 @Injectable()
 export class AssistantFileService {
   constructor(private readonly openaiService: OpenAIService) {}
+  // https://platform.openai.com/docs/api-reference/assistants
 
   async create(assistantId: string, fileId: string) {
     const createdAssistantFile = await this.openaiService.beta.assistants.files.create(
@@ -45,7 +46,6 @@ export class AssistantFileService {
       assistantId,
       fileId
     );
-
     return deletedAssistantFile;
   }
 }
