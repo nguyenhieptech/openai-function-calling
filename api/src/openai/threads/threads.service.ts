@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class ThreadService {
   constructor(private readonly openaiService: OpenAIService) {}
+  // https://platform.openai.com/docs/api-reference/threads
 
   async create() {
     const emptyThread = await this.openaiService.beta.threads.create();

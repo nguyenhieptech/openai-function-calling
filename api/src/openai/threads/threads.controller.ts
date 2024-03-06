@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { UpdateThreadDto } from './threads.dto';
+import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ThreadService } from './threads.service';
 
 @Controller('threads')
 export class ThreadController {
   constructor(private readonly threadService: ThreadService) {}
+  // https://platform.openai.com/docs/api-reference/threads
 
   @Post()
   create() {
