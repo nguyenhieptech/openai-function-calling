@@ -81,6 +81,7 @@ export function ChatContainer() {
       console.log('newMessage', newMessage);
       // setMessages([...messages, newMessage]);
       setUserInput('');
+      setMessages([...messages, newMessage]);
       setMessageValue(newMessage.message.content);
 
       toast.success('Successfully sent message', {
@@ -102,7 +103,7 @@ export function ChatContainer() {
         {!isFetching && messages.length === 0 && (
           <div className="m-auto font-bold">No messages found for thread.</div>
         )}
-        {/* {messages.map((message) => (
+        {messages.map((message) => (
           <div
             key={message.id}
             className={cn(
@@ -112,8 +113,8 @@ export function ChatContainer() {
           >
             {message.content[0].type === 'text' ? message.content[0].text.value : null}
           </div>
-        ))} */}
-        {messageValue}
+        ))}
+        {/* {messageValue} */}
       </div>
 
       {/* Input */}

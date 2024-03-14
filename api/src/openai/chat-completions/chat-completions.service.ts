@@ -1,6 +1,7 @@
 import { OpenAIService } from '@/openai/openai.service';
 import { WeatherService } from '@/weather/weather.service';
 import { Injectable } from '@nestjs/common';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
 
 @Injectable()
@@ -10,17 +11,14 @@ export class ChatCompletionsService {
     private readonly openaiService: OpenAIService
   ) {}
 
-  async create(content: string) {
+  async create(messageParamMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[]) {
     // https://platform.openai.com/docs/guides/function-calling/parallel-function-calling
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
-        role: 'user',
-        content,
-      },
-      {
         role: 'system',
-        content: `If you don't understand or don't have information, ask for clarification.`,
+        content: `Be concise, ask for clarification if you don't understand or don't have enough information receiving user inputs.`,
       },
+      ...messageParamMessages,
     ];
 
     const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
@@ -45,7 +43,7 @@ export class ChatCompletionsService {
     ];
 
     const firstResponse = await this.openaiService.chat.completions.create({
-      model: 'gpt-3.5-turbo-0125',
+      model: 'gpt-3.5-turbo-1106',
       messages: messages,
       tools: tools,
     });
@@ -53,12 +51,12 @@ export class ChatCompletionsService {
     const responseMessage = firstResponse.choices[0].message;
 
     // Step 2: check if the model wanted to call a function
-    const toolCalls = responseMessage.tool_calls!;
+    const toolCalls = responseMessage.tool_calls;
 
-    if (responseMessage.tool_calls) {
+    if (toolCalls) {
       // Step 3: call the function
       // Note: the JSON response may not always be valid; be sure to handle errors
-      const availableFunctions: Record<string, Function> = {
+      const availableFunctions: Record<string, (...args: string[]) => string> = {
         get_current_weather: this.weatherService.findAll,
       };
       // Extend conversation with assistant's reply
@@ -87,11 +85,17 @@ export class ChatCompletionsService {
       const secondResponse = await this.openaiService.chat.completions.create({
         model: 'gpt-3.5-turbo-0125',
         messages: messages,
+        stream: true,
       });
 
       // If you want to see the message directly, return message.content
       // return secondOpenAiResponse.choices[0].message.content;
-      return secondResponse.choices[0];
+
+      // https://sdk.vercel.ai/docs/getting-started
+      const stream = OpenAIStream(secondResponse);
+      return new StreamingTextResponse(stream);
     }
+
+    return firstResponse;
   }
 }

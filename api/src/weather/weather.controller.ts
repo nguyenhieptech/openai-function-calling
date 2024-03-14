@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { CreateWeatherDto } from './dto/create-weather.dto';
-import { UpdateWeatherDto } from './dto/update-weather.dto';
+import { CreateWeatherDto, UpdateWeatherDto } from './weather.dto';
 import { WeatherService } from './weather.service';
 
 @Controller('weather')
