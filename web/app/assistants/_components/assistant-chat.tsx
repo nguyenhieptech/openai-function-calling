@@ -67,8 +67,8 @@ export function AssistantChat() {
         <h2 className="text-center text-2xl font-semibold">AI Chatbot</h2>
 
         {/* Chat area */}
-        <div className="flex h-full flex-col items-center justify-between pb-4">
-          <ScrollArea className="h-[32rem] w-full sm:w-[80%]" ref={scrollAreaRef}>
+        <div className="flex h-full flex-col items-center justify-between pb-8">
+          <ScrollArea className="w-full sm:w-[80%]" ref={scrollAreaRef}>
             {messages.map((m) => (
               <div key={m.id} className="mr-6 whitespace-pre-wrap md:mr-12">
                 {m.role === 'user' && (
@@ -122,7 +122,7 @@ export function AssistantChat() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="relative w-[80%] pb-4"
             > */}
-          <form onSubmit={handleSubmit} className="relative w-[80%] pb-4">
+          <form onSubmit={handleSubmit} className="relative w-[80%] py-8">
             {/* <FormField
                 control={form.control}
                 name="input"
@@ -143,7 +143,7 @@ export function AssistantChat() {
               onChange={handleInputChange}
             />
             <Button
-              className="absolute right-3 top-3"
+              className="absolute right-3 top-11"
               size="icon"
               type="submit"
               disabled={isLoading}
