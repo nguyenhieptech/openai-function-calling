@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${font.className} h-full w-full p-20`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${font.className} h-full w-full`}>
         <AppProvider>{children}</AppProvider>
         <Toaster />
       </body>

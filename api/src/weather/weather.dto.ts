@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateWeatherDto } from './create-weather.dto';
+
+export class CreateWeatherDto {}
 
 export class UpdateWeatherDto extends PartialType(CreateWeatherDto) {}

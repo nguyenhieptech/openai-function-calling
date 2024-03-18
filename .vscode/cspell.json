@@ -47,6 +47,7 @@
     "zeroscope",
     "trpc",
     "finnhub",
+    "nuqs",
 
     // For media files
     "webp",
