@@ -1,4 +1,5 @@
 import { StoreProvider } from './store-provider';
+import { TanstackQueryProvider } from './tanstack-query-provider';
 import { ThemeProvider } from './theme-provider';
 
 export function AppProvider({ children }: React.PropsWithChildren) {
@@ -9,7 +10,9 @@ export function AppProvider({ children }: React.PropsWithChildren) {
       enableSystem
       disableTransitionOnChange
     >
-      <StoreProvider>{children}</StoreProvider>
+      <TanstackQueryProvider>
+        <StoreProvider>{children}</StoreProvider>
+      </TanstackQueryProvider>
     </ThemeProvider>
   );
 }
