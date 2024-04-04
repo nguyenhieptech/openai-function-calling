@@ -12,6 +12,7 @@
     "class",
     "className",
     "classNames",
+    "containerClassName",
 
     // Additional Tailwind CSS Intellisense for Transition API from Headless UI
     // https://headlessui.com/react/transition#component-api
