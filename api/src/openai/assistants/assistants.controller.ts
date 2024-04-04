@@ -1,4 +1,5 @@
-import { Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { CreateAssistantDto } from './assistants.dto';
 import { AssistantService } from './assistants.service';
 
 @Controller('assistants')
@@ -7,8 +8,8 @@ export class AssistantController {
   // https://platform.openai.com/docs/api-reference/assistants
 
   @Post()
-  create() {
-    return this.assistantService.create();
+  create(@Body() createAssistantDto: CreateAssistantDto) {
+    return this.assistantService.create(createAssistantDto);
   }
 
   @Get()

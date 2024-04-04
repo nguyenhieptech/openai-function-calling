@@ -7,13 +7,13 @@ Install packages
 ```bash
 cd web # Open terminal path in folder "web"
 
-npm i
+pnpm i
 ```
 
 Run the development server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -25,7 +25,7 @@ Install packages
 ```bash
 cd api # Open terminal path in folder "api"
 
-npm i
+pnpm i
 ```
 
 Add API Key in `.env`
@@ -37,7 +37,7 @@ OPENAI_API_KEY=Your OpenAI API Key
 Run the development server
 
 ```bash
-npm run start:dev
+pnpm start:dev
 ```
 
 Open [http://localhost:3333/api/v1](http://localhost:3333/api/v1) with your browser to see the api health check or open [http://localhost:3333/swagger](http://localhost:3333/swagger)

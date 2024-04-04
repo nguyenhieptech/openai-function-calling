@@ -9,6 +9,6 @@ export class ChatCompletionsController {
 
   @Post()
   create(@Body() createChatCompletionsDto: CreateChatCompletionsDto) {
-    return this.chatCompletionsService.create(createChatCompletionsDto.content);
+    return this.chatCompletionsService.create(createChatCompletionsDto.messages);
   }
 }
