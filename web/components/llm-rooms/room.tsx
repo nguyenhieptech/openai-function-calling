@@ -2,7 +2,7 @@
 
 import type { AI } from '@/app/action';
 import { Button } from '@/components/ui/button';
-import { Room } from '@/lib/schemas/room.schema';
+import { type Room } from '@/lib/schemas/room.schema';
 import { useActions, useUIState } from 'ai/rsc';
 
 export function Room({ room }: { room: Room }) {
